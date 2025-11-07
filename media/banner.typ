@@ -12,13 +12,19 @@
     radius: 10%,
   ),
 )
-#set text(font: "JetBrains Mono", size: 70pt, fill: darker, weight: 700)
+#set text(
+  font: "JetBrains Mono",
+  size: 120pt,
+  fill: darker,
+  weight: 700,
+  spacing: 10pt,
+)
 #set align(center + horizon)
 #let sm = text.with(size: 0.4em, weight: 300)
 
 #stack(
   dir: ltr,
-  spacing: 1em,
+  spacing: 40pt,
   image(bytes(directory-bytes), height: 60%),
   [ST#sm[atic] I#sm[ndex] L#sm[isting]],
   image(bytes(directory-bytes), height: 60%),
