@@ -44,18 +44,24 @@ For each version, prebuilt binaries are automatically built for Linux, MacOS and
 
 - Using [`cargo-binstall`](https://github.com/cargo-bins/cargo-binstall)
 
-  ```bash
+  ```sh
   cargo binstall stil
   ```
 
 - Using [`ubi`](https://github.com/houseabsolute/ubi):
 
-  ```bash
+  ```sh
   ubi -p sermuns/stil
   ```
 
 - From source with Cargo
 
-  ```bash
+  ```sh
   cargo install stil
   ```
+
+Actually, you don't need to install locally. It works fine in docker container:
+
+```sh
+docker run -v $(pwd):/app -u $(id -u):$(id -g) ghcr.io/sermuns/stil <arguments to stil>
+```
