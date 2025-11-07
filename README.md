@@ -1,5 +1,5 @@
 <a href="https://github.com/sermuns/stil">
-  <img src="https://raw.githubusercontent.com/sermuns/stil/refs/heads/main/media/banner.svg">
+  <img src="media/banner.png">
 </a>
 
 <div align="center">
