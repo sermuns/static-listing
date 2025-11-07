@@ -4,6 +4,10 @@ use maud::{DOCTYPE, html};
 use std::{fs, path::PathBuf};
 use walkdir::WalkDir;
 
+const ICON_STR: &'static str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/media/logo.svg"));
+const ICON_B64: &[u8] = &data_encoding_macro::base64!("filestylecss");
+const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/style.css"));
+
 #[derive(Parser, Debug)]
 #[clap(version, author, about)]
 struct Args {
@@ -15,17 +19,30 @@ struct Args {
     #[arg(short, long, default_value = "index.html")]
     output: PathBuf,
 
+    /// Which <title> to give the generated HTML
+    #[arg(short, long, default_value = "Static Listing")]
+    title: String,
+
     /// Which files/directories to NOT include in the output
-    #[arg(long, value_delimiter = ',')]
+    #[arg(short, long, value_delimiter = ',')]
     ignored: Vec<PathBuf>,
 }
 
-fn generate_html(paths: impl Iterator<Item = PathBuf>) -> String {
+fn generate_html(paths: impl Iterator<Item = PathBuf>, title: &str) -> String {
     html! {
         (DOCTYPE)
-        ul {
-            @for path in paths {
-                li { (path.to_string_lossy()) }
+        html {
+            head {
+                icon
+                title {(&title)}
+                style {(STYLE)}
+            }
+            body {
+                ul {
+                    @for path in paths {
+                        li { (path.to_string_lossy()) }
+                    }
+                }
             }
         }
     }
@@ -50,7 +67,7 @@ fn main() -> Result<()> {
             true
         });
 
-    fs::write(args.output, generate_html(input_paths))?;
+    fs::write(args.output, generate_html(input_paths, &args.title))?;
 
     Ok(())
 }
