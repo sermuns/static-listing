@@ -1,0 +1,33 @@
+name: Publish README on GitHub pages
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/site.yml
+      - README.md
+      - media/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    permissions:
+      id-token: write # to use actions/deploy-pages
+      pages: write # to push to a github pages site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: meread
+
+      - run: meread --export-dir public
+
+      - run: cp -r media public/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
