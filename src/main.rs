@@ -5,7 +5,7 @@ use std::{fs, path::PathBuf};
 use walkdir::WalkDir;
 
 const LOGO_B64: &str = env!("LOGO_B64");
-const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/style.css"));
+const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/style.css"));
 
 #[derive(Parser, Debug)]
 #[clap(version, author, about)]
@@ -32,15 +32,14 @@ fn generate_html(paths: impl Iterator<Item = PathBuf>, title: &str) -> String {
         (DOCTYPE)
         html {
             head {
-                link rel="icon" type="image/svg+xml" href={"data:image/svg+xml;base64,"(LOGO_B64) };
                 title {(&title)};
                 style {(STYLE)};
+                link rel="icon" type="image/svg+xml" href={"data:image/svg+xml;base64,"(LOGO_B64) };
             }
             body {
-                img src={"data:image/svg+xml;base64,"(LOGO_B64)};
                 ul {
                     @for path in paths {
-                        li { (path.to_string_lossy()) }
+                        a href=(path.to_string_lossy()) { (path.to_string_lossy()) }
                     }
                 }
             }
