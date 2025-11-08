@@ -1,14 +1,27 @@
 # Changelog
 
-## [0.3.1](https://github.com/sermuns/stil/compare/v0.3.0..0.3.1) - 2025-11-08
+## [0.3.2](https://github.com/sermuns/stil/compare/v0.3.1..0.3.2) - 2025-11-08
 
 ### 🚀 Features
 
-- remove footer, and therefore `time` crate by Samuel Åkesson in [eca1b88](https://github.com/sermuns/stil/commit/eca1b88397f47d1bb67e828a70d90a8268d6b580)
+- style better, start creating grid showing dir/file by @sermuns in [e52a6f3](https://github.com/sermuns/stil/commit/e52a6f319b0a5afaf524b9a3029f93eb4b0e84a4)
+
+### 🚜 Refactor
+
+- make logic of reading dir entries better, sort them too. by @sermuns in [6d01d7c](https://github.com/sermuns/stil/commit/6d01d7c48877ab79f80d967c12fddf7a5ead4357)
+
+### 📚 Documentation
+
+- update readme, show demo by @sermuns in [2b9bdb1](https://github.com/sermuns/stil/commit/2b9bdb111e67f7441472c5270a6dce578eedf31b)
+## [0.3.1](https://github.com/sermuns/stil/compare/v0.3.0..v0.3.1) - 2025-11-08
+
+### 🚀 Features
+
+- remove footer, and therefore `time` crate by @sermuns in [eca1b88](https://github.com/sermuns/stil/commit/eca1b88397f47d1bb67e828a70d90a8268d6b580)
 
 ### 💼 Other
 
-- update cliff.toml, redo changelog by Samuel Åkesson in [ec5d3d4](https://github.com/sermuns/stil/commit/ec5d3d415122029409ad49a615ad5688e5434d73)
+- update cliff.toml, redo changelog by @sermuns in [ec5d3d4](https://github.com/sermuns/stil/commit/ec5d3d415122029409ad49a615ad5688e5434d73)
 
 ### 🚜 Refactor
 
@@ -16,7 +29,11 @@
 
 ### ⚡ Performance
 
-- optimize the release build for code speed, no debug in dev by Samuel Åkesson in [89b5009](https://github.com/sermuns/stil/commit/89b50099c3e4d4c078622287c39616a4d2efd26e)
+- optimize the release build for code speed, no debug in dev by @sermuns in [89b5009](https://github.com/sermuns/stil/commit/89b50099c3e4d4c078622287c39616a4d2efd26e)
+
+### ⚙️ Miscellaneous Tasks
+
+- Release stil version 0.3.1 by @sermuns in [ff98bec](https://github.com/sermuns/stil/commit/ff98beca13e20cdc80d04e1b5afd3e45d8dec371)
 ## [0.3.0](https://github.com/sermuns/stil/compare/v0.2.0..v0.3.0) - 2025-11-08
 
 ### 🚀 Features
