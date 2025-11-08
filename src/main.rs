@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use clap::Parser;
-use maud::{DOCTYPE, html};
+use maud::{DOCTYPE, PreEscaped, html};
 use std::ffi::{OsStr, OsString};
 use std::fs::DirEntry;
 use std::sync::LazyLock;
@@ -12,36 +12,41 @@ use std::{
 
 const LOGO_B64: &str = env!("LOGO_B64");
 const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/style.css"));
+
+#[derive(Parser, Debug)]
+#[clap(version, author, about)]
+struct Args {
+    /// Directory to generate listing of
+    #[arg(default_value = ".")]
+    input_dir: PathBuf,
+
+    /// Directory to write generated HTML to
+    #[arg(short, long, default_value = "public")]
+    output_dir: PathBuf,
+
+    /// Search hidden files and directories
+    #[arg(short = 'H', long)]
+    hidden: bool,
+
+    /// <title> to give the generated HTML
+    #[arg(short, long, default_value = env!("CARGO_PKG_NAME"))]
+    title: String,
+
+    /// Files/directories to NOT include in the output
+    #[arg(short, long, value_delimiter = ',')]
+    ignored: Vec<PathBuf>,
+
+    /// On which URL path the final page will be deployed
+    #[arg(short, long, default_value = "/")]
+    url_path: PathBuf,
+}
+
 static ARGS: LazyLock<Args> = LazyLock::new(|| {
     let mut args = Args::parse();
     let mut default_ignored = vec![PathBuf::from(".git"), args.output_dir.clone()];
     args.ignored.append(&mut default_ignored);
     args
 });
-
-#[derive(Parser, Debug)]
-#[clap(version, author, about)]
-struct Args {
-    /// Which directory to generate listing of
-    #[arg(default_value = ".")]
-    input_dir: PathBuf,
-
-    /// Which directory to write generated HTML to
-    #[arg(short, long, default_value = "public")]
-    output_dir: PathBuf,
-
-    /// Which <title> to give the generated HTML
-    #[arg(short, long, default_value = env!("CARGO_PKG_NAME"))]
-    title: String,
-
-    /// Which files/directories to NOT include in the output
-    #[arg(short, long, value_delimiter = ',')]
-    ignored: Vec<PathBuf>,
-
-    /// On which path the final page will be deployed
-    #[arg(short, long, default_value = "/")]
-    url_path: PathBuf,
-}
 
 struct UsefulDirEntry {
     path: PathBuf,
@@ -81,6 +86,13 @@ fn generate_html<'g>(
                 }
                 main {
                     @for entry in useful_dir_entries {
+                        @if entry.path.is_dir() {
+                            span class="dir" {(PreEscaped("&#128448;"))}
+                        }
+                        @else {
+                            //span class="file" {(PreEscaped("&#128462;"))}
+                            span class="file" {}
+                        }
                         a href={(ARGS.url_path.join(entry.path.strip_prefix(".").unwrap()).to_string_lossy()) "/"} {
                             (entry.basename.to_string_lossy())
                         }
@@ -104,7 +116,32 @@ fn build(root: &Path) -> Result<()> {
         };
     } else {
         fs::create_dir_all(to)?;
-        let dir_entries: Vec<DirEntry> = root.read_dir()?.filter_map(|e| e.ok()).collect();
+        let mut dir_entries: Vec<DirEntry> = root
+            .read_dir()?
+            .filter_map(|entry| {
+                if let Ok(e) = entry {
+                    let entry_path = e.path();
+                    if !ARGS.hidden
+                        && let Some(file_name) = entry_path.file_name()
+                        && file_name.to_str().unwrap().starts_with(".")
+                    {
+                        return None;
+                    }
+
+                    if ARGS
+                        .ignored
+                        .iter()
+                        .any(|i| Path::new("./").join(i) == entry_path)
+                    {
+                        return None;
+                    }
+                    return Some(e);
+                }
+                None
+            })
+            .collect();
+        dir_entries.sort_by_key(|e| e.path());
+
         fs::write(
             to.join("index.html"),
             generate_html(
@@ -116,16 +153,8 @@ fn build(root: &Path) -> Result<()> {
             ),
         )
         .context("unable to write output index.html")?;
-        for entry in root.read_dir()? {
-            let entry = entry?;
-            let entry_path = &entry.path();
-            if ARGS
-                .ignored
-                .iter()
-                .any(|i| &Path::new("./").join(i) == entry_path)
-            {
-                continue;
-            }
+
+        for entry in dir_entries {
             build(&entry.path())?;
         }
     }
