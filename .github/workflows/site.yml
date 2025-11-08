@@ -19,11 +19,12 @@ jobs:
 
       - uses: taiki-e/install-action@v2
         with:
-          tool: meread
+          tool: meread,stil
 
       - run: meread --export-dir public
-
       - run: cp -r media public/
+
+      - run: stil --ignored public --output-dir public/demo --url-path /demo/
 
       - uses: actions/upload-pages-artifact@v3
         with:
