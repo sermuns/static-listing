@@ -63,10 +63,12 @@ fn generate_html<'g>(
     useful_dir_entries: impl Iterator<Item = UsefulDirEntry>,
     root: &'g Path,
 ) -> String {
-    let ancestor_paths = root.ancestors();
-    let mut ancestor_paths_reversed = ancestor_paths.collect::<Vec<&'g Path>>().into_iter().rev();
-    let root_ancestor = ancestor_paths_reversed.next().expect("must have root");
-    let rest_ancestors = ancestor_paths_reversed.skip(1);
+    let ancestor_paths_reversed = root
+        .ancestors()
+        .collect::<Vec<&'g Path>>()
+        .into_iter()
+        .rev()
+        .skip(2);
 
     let now_str = OffsetDateTime::now_local()
         .unwrap_or_else(|_| OffsetDateTime::now_utc())
@@ -86,7 +88,7 @@ fn generate_html<'g>(
                     a href=(&ARGS.url_path.to_string_lossy()) {
                         ("/")
                     }
-                    @for ancestor_path in rest_ancestors {
+                    @for ancestor_path in ancestor_paths_reversed {
                         a href={(ARGS.url_path.join(ancestor_path.strip_prefix(".").unwrap()).to_string_lossy()) "/"} {
                             (ancestor_path.file_name().unwrap_or_else(|| OsStr::new("/")).to_string_lossy())
                         }
