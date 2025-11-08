@@ -55,7 +55,8 @@ struct Args {
 }
 
 struct UsefulDirEntry {
-    no_root_path: OsString,
+    path: PathBuf,
+    basename: OsString,
 }
 
 fn generate_html<'g>(
@@ -94,8 +95,8 @@ fn generate_html<'g>(
                 }
                 main {
                     @for entry in useful_dir_entries {
-                        a href={(entry.no_root_path.to_string_lossy()) "/"} {
-                            (entry.no_root_path.to_string_lossy())
+                        a href={(ARGS.url_path.join(entry.path.strip_prefix(".").unwrap()).to_string_lossy()) "/"} {
+                            (entry.basename.to_string_lossy())
                         }
                     }
                 }
@@ -127,7 +128,8 @@ fn build(root: &Path) -> Result<()> {
             to.join("index.html"),
             generate_html(
                 dir_entries.iter().map(|e| UsefulDirEntry {
-                    no_root_path: e.file_name(),
+                    path: e.path(),
+                    basename: e.file_name(),
                 }),
                 root,
             ),
