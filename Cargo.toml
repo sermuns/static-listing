@@ -13,7 +13,6 @@ authors = ["Samuel Åkesson <sermuns@lysator.liu.se>"]
 anyhow = "1.0.100"
 clap = { version = "4.5.51", features = ["derive"] }
 maud = "0.27.0"
-time = { version = "0.3.44", features = ["formatting", "local-offset", "macros"] }
 
 [build-dependencies]
 base64 = "0.22.1"
@@ -28,4 +27,4 @@ codegen-units = 1
 strip = true
 
 [profile.dev]
-debug = 0
+debug = false

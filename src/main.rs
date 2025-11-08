@@ -9,13 +9,6 @@ use std::{
     fs,
     path::{Path, PathBuf},
 };
-use time::OffsetDateTime;
-
-use time::format_description::BorrowedFormatItem;
-use time::macros::format_description;
-
-const DATE_FORMAT: &[BorrowedFormatItem<'_>] =
-    format_description!("[year]-[month]-[day] [hour]:[minute]:[second]");
 
 const LOGO_B64: &str = env!("LOGO_B64");
 const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/style.css"));
@@ -48,10 +41,6 @@ struct Args {
     /// On which path the final page will be deployed
     #[arg(short, long, default_value = "/")]
     url_path: PathBuf,
-
-    /// Whether to have footer in generated HTML
-    #[arg(long, default_value_t = true)]
-    footer: bool,
 }
 
 struct UsefulDirEntry {
@@ -69,11 +58,6 @@ fn generate_html<'g>(
         .into_iter()
         .rev()
         .skip(2);
-
-    let now_str = OffsetDateTime::now_local()
-        .unwrap_or_else(|_| OffsetDateTime::now_utc())
-        .format(DATE_FORMAT)
-        .unwrap();
 
     html! {
         (DOCTYPE)
@@ -100,11 +84,6 @@ fn generate_html<'g>(
                         a href={(ARGS.url_path.join(entry.path.strip_prefix(".").unwrap()).to_string_lossy()) "/"} {
                             (entry.basename.to_string_lossy())
                         }
-                    }
-                }
-                @if ARGS.footer {
-                    footer {
-                        "Generated " (now_str)
                     }
                 }
             }
