@@ -4,6 +4,7 @@ use maud::{DOCTYPE, html};
 use std::ffi::OsStr;
 use std::fs::DirEntry;
 use std::sync::LazyLock;
+use std::time::Instant;
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -13,7 +14,8 @@ use time::OffsetDateTime;
 use time::format_description::BorrowedFormatItem;
 use time::macros::format_description;
 
-const DATE_FORMAT: &[BorrowedFormatItem<'_>] = format_description!("[year]-[month]-[day] [hour]:[minute]:[second]");
+const DATE_FORMAT: &[BorrowedFormatItem<'_>] =
+    format_description!("[year]-[month]-[day] [hour]:[minute]:[second]");
 
 const LOGO_B64: &str = env!("LOGO_B64");
 const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/style.css"));
@@ -153,6 +155,7 @@ fn build(root: &Path) -> Result<()> {
 }
 
 fn main() -> Result<()> {
+    let start_instant = Instant::now();
     match fs::remove_dir_all(&ARGS.output_dir) {
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(()),
         default => default,
@@ -160,5 +163,12 @@ fn main() -> Result<()> {
     .with_context(|| "unable to remove output dir")?;
     fs::create_dir(&ARGS.output_dir)?;
 
-    build(&ARGS.input_dir)
+    build(&ARGS.input_dir)?;
+    println!(
+        "Built static index listing of `{}` to `{}` in {:?}",
+        &ARGS.input_dir.to_string_lossy(),
+        &ARGS.output_dir.to_string_lossy(),
+        start_instant.elapsed(),
+    );
+    Ok(())
 }
