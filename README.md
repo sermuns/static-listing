@@ -9,8 +9,11 @@
     <img alt="WTFPL" src="https://img.shields.io/badge/License-WTFPL-brightgreen.svg"></a>
   <a href="https://crates.io/crates/stil"><img src="https://img.shields.io/crates/v/stil.svg" alt="Version info"></a>
 </div>
+<br>
 
-`stil` is a dead simple [static site generator](https://en.wikipedia.org/wiki/Static_site_generator) that tries to replicate the experience of viewing a dynamically generated index listing typically produced by web servers such as nginx and apache.
+`stil` is a dead simple static site generator that replicates the experience of viewing a dynamically generated index listing produced by web servers such as nginx and apache.
+
+👉 See what `stil` generates for _this repo_: <a href="https://stil.samake.se/demo/" target="_blank">https://stil.samake.se/demo/</a>
 
 ## Usage
 
@@ -23,14 +26,10 @@ Arguments:
   [INPUT_DIR]  Which directory to generate listing of [default: .]
 
 Options:
-  -o, --output-dir <OUTPUT_DIR>  Which directory to write generated HTML to
-[default: public]
-  -t, --title <TITLE>            Which <title> to give the generated HTML [d
-efault: stil]
-  -i, --ignored <IGNORED>        Which files/directories to NOT include in t
-he output
-  -u, --url-path <URL_PATH>      On which path the final page will be deploy
-ed [default: /]
+  -o, --output-dir <OUTPUT_DIR>  Which directory to write generated HTML to [default: public]
+  -t, --title <TITLE>            Which <title> to give the generated HTML [default: stil]
+  -i, --ignored <IGNORED>        Which files/directories to NOT include in the output
+  -u, --url-path <URL_PATH>      On which path the final page will be deployed [default: /]
   -h, --help                     Print help
   -V, --version                  Print version
 ```
