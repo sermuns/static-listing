@@ -2,10 +2,11 @@
 	--background-color: #eee;
 	--foreground-color: #111;
 	--rusty-red: rgb(228, 58, 37);
+	--line-thickness: round(0.2rem, 1px);
 
 	background-color: var(--background-color);
 	color: var(--foreground-color);
-	font-family: "Libertinus Sans", sans-serif;
+	font-family: sans-serif;
 }
 
 a {
@@ -24,25 +25,29 @@ body {
 	padding: 1rem;
 	box-sizing: border-box;
 	display: flex;
+	align-items: flex-start;
 	flex-direction: column;
 	min-height: 100vh;
 }
 
 main {
 	display: grid;
-	grid-template-columns: auto 1fr;
-	gap: .5rem 1rem;
+	grid-template-columns: repeat(4, auto);
+	grid-auto-rows: 2rem;
+	gap: 0.5rem 2rem;
 	padding: 1rem;
 	flex: 1;
 
 	.dir {
 		color: var(--rusty-red);
 		font-weight: bolder;
+		justify-self: center;
 	}
 }
 
 header {
-	border-bottom: 0.2rem var(--foreground-color) solid;
+	align-self: stretch;
+	border-bottom: var(--line-thickness) var(--foreground-color) solid;
 	padding: 0.5rem 1rem;
 	display: flex;
 	gap: 0.5rem;

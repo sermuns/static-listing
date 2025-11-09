@@ -1,14 +1,22 @@
 use anyhow::{Context, Result};
 use clap::Parser;
+use humansize::{DECIMAL, format_size};
 use maud::{DOCTYPE, PreEscaped, html};
 use std::ffi::{OsStr, OsString};
-use std::fs::DirEntry;
+use std::fs::{DirEntry, metadata};
+use std::os::unix::fs::MetadataExt;
 use std::sync::LazyLock;
 use std::time::Instant;
 use std::{
     fs,
     path::{Path, PathBuf},
 };
+use time::OffsetDateTime;
+use time::format_description::BorrowedFormatItem;
+use time::macros::format_description;
+
+const DATE_FORMAT: &[BorrowedFormatItem<'_>] =
+    format_description!("[year]-[month]-[day] [hour]:[minute]:[second]");
 
 const LOGO_B64: &str = env!("LOGO_B64");
 const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/style.css"));
@@ -51,6 +59,8 @@ static ARGS: LazyLock<Args> = LazyLock::new(|| {
 struct UsefulDirEntry {
     path: PathBuf,
     basename: OsString,
+    last_modified_str: String,
+    human_size_str: String,
 }
 
 fn generate_html<'g>(
@@ -85,6 +95,10 @@ fn generate_html<'g>(
                     }
                 }
                 main {
+                    b {"Type"}
+                    b {"Name"}
+                    b {"Last modified"}
+                    b {"Size"}
                     @for entry in useful_dir_entries {
                         @if entry.path.is_dir() {
                             span class="dir" {(PreEscaped("&#128448;"))}
@@ -95,6 +109,12 @@ fn generate_html<'g>(
                         }
                         a href={(ARGS.url_path.join(entry.path.strip_prefix(".").unwrap()).to_string_lossy()) "/"} {
                             (entry.basename.to_string_lossy())
+                        }
+                        span {
+                            (entry.last_modified_str)
+                        }
+                        span {
+                            (entry.human_size_str)
                         }
                     }
                 }
@@ -145,9 +165,31 @@ fn build(root: &Path) -> Result<()> {
         fs::write(
             to.join("index.html"),
             generate_html(
-                dir_entries.iter().map(|e| UsefulDirEntry {
-                    path: e.path(),
-                    basename: e.file_name(),
+                dir_entries.iter().map(|e| {
+                    let entry_metadata = e.path().metadata();
+                    UsefulDirEntry {
+                        path: e.path(),
+                        basename: e.file_name(),
+                        last_modified_str: {
+                            if let Ok(meta) = &entry_metadata {
+                                if let Ok(modified) = meta.modified() {
+                                    let datetime: OffsetDateTime = modified.into();
+                                    datetime.format(DATE_FORMAT).unwrap_or("-".to_string())
+                                } else {
+                                    "-".to_string()
+                                }
+                            } else {
+                                "-".to_string()
+                            }
+                        },
+                        human_size_str: {
+                            if let Ok(meta) = &entry_metadata {
+                                format_size(meta.size(), DECIMAL)
+                            } else {
+                                "-".to_string()
+                            }
+                        },
+                    }
                 }),
                 root,
             ),
