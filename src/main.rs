@@ -1,10 +1,9 @@
 use anyhow::{Context, Result};
 use clap::Parser;
-use humansize::{format_size, BINARY};
+use humansize::{BINARY, format_size};
 use maud::{DOCTYPE, PreEscaped, html};
 use std::ffi::{OsStr, OsString};
 use std::fs::DirEntry;
-use std::os::unix::fs::MetadataExt;
 use std::sync::LazyLock;
 use std::time::Instant;
 use std::{
@@ -183,8 +182,10 @@ fn build(root: &Path) -> Result<()> {
                             }
                         },
                         human_size_str: {
-                            if let Ok(meta) = &entry_metadata {
-                                format_size(meta.size(), BINARY)
+                            if e.path().is_file()
+                                && let Ok(meta) = &entry_metadata
+                            {
+                                format_size(meta.len(), BINARY)
                             } else {
                                 "-".to_string()
                             }
