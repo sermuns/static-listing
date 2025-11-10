@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use clap::Parser;
+use argh::FromArgs;
 use humansize::{BINARY, format_size};
 use maud::{DOCTYPE, PreEscaped, html};
 use std::ffi::{OsStr, OsString};
@@ -20,36 +20,36 @@ const DATE_FORMAT: &[BorrowedFormatItem<'_>] =
 const LOGO_B64: &str = env!("LOGO_B64");
 const STYLE: &str = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/style.css"));
 
-#[derive(Parser, Debug)]
-#[clap(version, author, about)]
+#[derive(FromArgs, Debug)]
+/// .
 struct Args {
-    /// Directory to generate listing of
-    #[arg(default_value = ".")]
+    /// directory to generate listing of
+    #[argh(option, default = "PathBuf::from(\".\")")]
     input_dir: PathBuf,
 
-    /// Directory to write generated HTML to
-    #[arg(short, long, default_value = "public")]
+    /// directory to write generated html to
+    #[argh(option, default = "PathBuf::from(\"public\")")]
     output_dir: PathBuf,
 
-    /// Search hidden files and directories
-    #[arg(short = 'H', long)]
+    /// search hidden files and directories
+    #[argh(switch)]
     hidden: bool,
 
-    /// <title> to give the generated HTML
-    #[arg(short, long, default_value = env!("CARGO_PKG_NAME"))]
+    /// title to give the generated HTML
+    #[argh(option, default = "env!(\"CARGO_PKG_NAME\").to_string()")]
     title: String,
 
-    /// Files/directories to NOT include in the output
-    #[arg(short, long, value_delimiter = ',')]
+    /// files/directories to not include in the output
+    #[argh(option)]
     ignored: Vec<PathBuf>,
 
-    /// On which URL path the final page will be deployed
-    #[arg(short, long, default_value = "/")]
+    /// on which url path the final page will be deployed
+    #[argh(option, default = "PathBuf::from(\"/\")")]
     url_path: PathBuf,
 }
 
 static ARGS: LazyLock<Args> = LazyLock::new(|| {
-    let mut args = Args::parse();
+    let mut args: Args = argh::from_env();
     let mut default_ignored = vec![PathBuf::from(".git"), args.output_dir.clone()];
     args.ignored.append(&mut default_ignored);
     args
