@@ -11,6 +11,10 @@
 
 - bump syn to 2.0.110 by @sermuns in [d581412](https://github.com/sermuns/stil/commit/d581412d75b7bd2c3a6519279e80ead2d4c61766)
 - include less features by @sermuns in [2d0ec70](https://github.com/sermuns/stil/commit/2d0ec704b4a4ff10cb264508baa79acd22ee610b)
+
+### ⚙️ Miscellaneous Tasks
+
+- Release stil version 0.4.2 by Samuel Åkesson in [6a8cfa2](https://github.com/sermuns/stil/commit/6a8cfa2dc4fb3b3d7a902fc8c79c8d96e51ab1c1)
 ## [0.4.1](https://github.com/sermuns/stil/compare/v0.4.0..v0.4.1) - 2025-11-10
 
 ### 🚀 Features
