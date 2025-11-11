@@ -77,6 +77,8 @@ fn generate_html<'g>(
         (DOCTYPE)
         html {
             head {
+                meta charset="UTF-8";
+                meta name="viewport" content="width=device-width, initial-scale=1";
                 title {(ARGS.title)};
                 style {(STYLE)};
                 link rel="icon" type="image/svg+xml" href={"data:image/svg+xml;base64,"(LOGO_B64) };
