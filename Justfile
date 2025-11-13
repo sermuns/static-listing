@@ -7,5 +7,13 @@ watch:
 serve:
 	~/.cargo/bin/http-server -i public
 
+build-release:
+  cargo build --release
+
+benchmark: build-release
+    hyperfine \
+      --shell=none \
+      'target/release/stil'
+
 [parallel]
 dev: serve watch
