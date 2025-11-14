@@ -1,6 +1,10 @@
 name: Publish README on GitHub pages
 on:
   workflow_dispatch: 
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
   push:
     branches:
       - main
