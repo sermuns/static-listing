@@ -6,6 +6,10 @@
 
 - fix #1, also some refactoring and performance by @sermuns in [88c5981](https://github.com/sermuns/stil/commit/88c5981ea3d61d61d392e7586a1ca6faf32be370)
 
+### 🚜 Refactor
+
+- fix typo, reorder imports by @sermuns in [ba24e42](https://github.com/sermuns/stil/commit/ba24e422e3e6baf862b35b46a887d3076154bc7e)
+
 ### ⚡ Performance
 
 - use less clones by @sermuns in [e1323d9](https://github.com/sermuns/stil/commit/e1323d997aed5dac561082a290aa41e2c35b5272)
@@ -14,6 +18,7 @@
 
 - change release md style by @sermuns in [0203f67](https://github.com/sermuns/stil/commit/0203f67e4984958417e941bdd4ccd9c05c0c9d3e)
 - add benchmark recipes by @sermuns in [31a51c2](https://github.com/sermuns/stil/commit/31a51c2a93303e80edb0df01a715cd010f21e7d4)
+- Release stil version 0.4.3 by @sermuns in [3ab2345](https://github.com/sermuns/stil/commit/3ab2345d823c33bd161dbaa767fbede6f1f0277c)
 ## [v0.4.2](https://github.com/sermuns/stil/compare/v0.4.1..v0.4.2) - 2025-11-11
 
 ### 🐛 Bug Fixes
