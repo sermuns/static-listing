@@ -1,6 +1,6 @@
 [package]
 name = "stil"
-version = "0.4.2"
+version = "0.4.3"
 description = "generate STatic site from Index Listing of directory"
 edition = "2024"
 repository = "https://github.com/sermuns/stil"

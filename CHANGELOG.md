@@ -1,6 +1,20 @@
 # Changelog
 
-## [0.4.2](https://github.com/sermuns/stil/compare/v0.4.1..0.4.2) - 2025-11-11
+## [0.4.3](https://github.com/sermuns/stil/compare/v0.4.2..0.4.3) - 2025-11-14
+
+### 🐛 Bug Fixes
+
+- fix #1, also some refactoring and performance by @sermuns in [88c5981](https://github.com/sermuns/stil/commit/88c5981ea3d61d61d392e7586a1ca6faf32be370)
+
+### ⚡ Performance
+
+- use less clones by @sermuns in [e1323d9](https://github.com/sermuns/stil/commit/e1323d997aed5dac561082a290aa41e2c35b5272)
+
+### ⚙️ Miscellaneous Tasks
+
+- change release md style by @sermuns in [0203f67](https://github.com/sermuns/stil/commit/0203f67e4984958417e941bdd4ccd9c05c0c9d3e)
+- add benchmark recipes by @sermuns in [31a51c2](https://github.com/sermuns/stil/commit/31a51c2a93303e80edb0df01a715cd010f21e7d4)
+## [v0.4.2](https://github.com/sermuns/stil/compare/v0.4.1..v0.4.2) - 2025-11-11
 
 ### 🐛 Bug Fixes
 
@@ -14,8 +28,9 @@
 
 ### ⚙️ Miscellaneous Tasks
 
-- Release stil version 0.4.2 by Samuel Åkesson in [6a8cfa2](https://github.com/sermuns/stil/commit/6a8cfa2dc4fb3b3d7a902fc8c79c8d96e51ab1c1)
-## [0.4.1](https://github.com/sermuns/stil/compare/v0.4.0..v0.4.1) - 2025-11-10
+- Release stil version 0.4.2 by @sermuns in [6a8cfa2](https://github.com/sermuns/stil/commit/6a8cfa2dc4fb3b3d7a902fc8c79c8d96e51ab1c1)
+- Release stil version 0.4.2 by @sermuns in [f03de3f](https://github.com/sermuns/stil/commit/f03de3f5af2fec2e3a9d83f0477788b4f8c993c0)
+## [v0.4.1](https://github.com/sermuns/stil/compare/v0.4.0..v0.4.1) - 2025-11-10
 
 ### 🚀 Features
 
@@ -28,7 +43,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Release stil version 0.4.1 by @sermuns in [fe06d11](https://github.com/sermuns/stil/commit/fe06d1106170c315e81c01e0421661d6c8b275a3)
-## [0.4.0](https://github.com/sermuns/stil/compare/v0.3.2..v0.4.0) - 2025-11-09
+## [v0.4.0](https://github.com/sermuns/stil/compare/v0.3.2..v0.4.0) - 2025-11-09
 
 ### 🚀 Features
 
@@ -37,7 +52,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Release stil version 0.4.0 by @sermuns in [4f286db](https://github.com/sermuns/stil/commit/4f286dbdb283bb252c861a6cb7d2154ac5075a4b)
-## [0.3.2](https://github.com/sermuns/stil/compare/v0.3.1..v0.3.2) - 2025-11-08
+## [v0.3.2](https://github.com/sermuns/stil/compare/v0.3.1..v0.3.2) - 2025-11-08
 
 ### 🚀 Features
 
@@ -54,7 +69,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Release stil version 0.3.2 by @sermuns in [57dfe35](https://github.com/sermuns/stil/commit/57dfe3527328085178c5c0a3fa22c4c9208e17b9)
-## [0.3.1](https://github.com/sermuns/stil/compare/v0.3.0..v0.3.1) - 2025-11-08
+## [v0.3.1](https://github.com/sermuns/stil/compare/v0.3.0..v0.3.1) - 2025-11-08
 
 ### 🚀 Features
 
@@ -75,7 +90,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Release stil version 0.3.1 by @sermuns in [ff98bec](https://github.com/sermuns/stil/commit/ff98beca13e20cdc80d04e1b5afd3e45d8dec371)
-## [0.3.0](https://github.com/sermuns/stil/compare/v0.2.0..v0.3.0) - 2025-11-08
+## [v0.3.0](https://github.com/sermuns/stil/compare/v0.2.0..v0.3.0) - 2025-11-08
 
 ### 🚀 Features
 
@@ -91,7 +106,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Release stil version 0.3.0 by @sermuns in [fc832e8](https://github.com/sermuns/stil/commit/fc832e8b3d155b24f4e6435847858a205f65d36e)
-## [0.2.0](https://github.com/sermuns/stil/compare/v0.1.0..v0.2.0) - 2025-11-07
+## [v0.2.0](https://github.com/sermuns/stil/compare/v0.1.0..v0.2.0) - 2025-11-07
 
 ### 🚀 Features
 
@@ -100,4 +115,4 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Release stil version 0.2.0 by @sermuns in [a42f4fd](https://github.com/sermuns/stil/commit/a42f4fd01002909954ba310cf0450c3f5d0da4d4)
-## [0.1.0] - 2025-11-07
+## [v0.1.0] - 2025-11-07
