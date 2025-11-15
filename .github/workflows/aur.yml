@@ -1,0 +1,73 @@
+name: Update AUR pkgs
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
+
+jobs:
+  find-latest-version:
+    runs-on: ubuntu-24.04
+    outputs:
+      latest_version: ${{ steps.ls-remote.outputs.latest_version }}
+    steps:
+      - id: ls-remote
+        run: echo "latest_version=$(git ls-remote --tags --refs --sort='v:refname' $GITHUB_SERVER_URL/$GITHUB_REPOSITORY | tail -n1 | sed 's/.*\/v//')" >> "$GITHUB_OUTPUT"
+      - run: echo ${{ steps.ls-remote.outputs.latest_version }}
+
+  update-git:
+    runs-on: ubuntu-24.04
+    needs: find-latest-version
+    steps:
+      - run: |
+          eval $(ssh-agent)
+          ssh-add - <<< "$SSH_KEY"
+          mkdir -p ~/.ssh
+          echo "aur.archlinux.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuBKrPzbawxA/k2g6NcyV5jmqwJ2s+zpgZGZ7tpLIcN" >> ~/.ssh/known_hosts
+          git clone aur@aur.archlinux.org:stil
+          cd stil
+
+          LATEST_SHA256=$(curl -sL https://github.com/sermuns/stil/archive/refs/tags/v$LATEST_VERSION.tar.gz | sha256sum | cut -d' ' -f1)
+
+          sed -i -e "s/^pkgver.*/pkgver=$LATEST_VERSION/" PKGBUILD
+          sed -i -e "s/^sha256sums.*/sha256sums=('$LATEST_SHA256')/" PKGBUILD
+
+          sed -i -e "s/pkgver.*/pkgver = $LATEST_VERSION/" .SRCINFO
+          sed -i -e "s/sha256sums.*/sha256sums = $LATEST_SHA256/" .SRCINFO
+
+          git config user.name "Samuel Åkesson"
+          git config user.email "sermuns@lysator.liu.se"
+          git commit -am "Update to v$LATEST_VERSION"
+          git push
+        env:
+          SSH_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          LATEST_VERSION: ${{ needs.find-latest-version.outputs.latest_version }}
+
+  update-bin:
+    runs-on: ubuntu-24.04
+    needs: find-latest-version
+    steps:
+      - run: |
+          eval $(ssh-agent)
+          ssh-add - <<< "$SSH_KEY"
+          mkdir -p ~/.ssh
+          echo "aur.archlinux.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuBKrPzbawxA/k2g6NcyV5jmqwJ2s+zpgZGZ7tpLIcN" >> ~/.ssh/known_hosts
+          git clone aur@aur.archlinux.org:stil-bin
+          cd stil-bin
+
+          LATEST_SHA256=$(curl -sL https://github.com/sermuns/stil/releases/download/v$LATEST_VERSION/stil-v$LATEST_VERSION-x86_64-unknown-linux-gnu.tar.gz | sha256sum | cut -d' ' -f1)
+
+          sed -i -e "s/^pkgver.*/pkgver=$LATEST_VERSION/" PKGBUILD
+          sed -i -e "s/^sha256sums.*/sha256sums=('$LATEST_SHA256')/" PKGBUILD
+
+          sed -i -e "s/pkgver.*/pkgver = $LATEST_VERSION/" .SRCINFO
+          sed -i -e "s/sha256sums.*/sha256sums = $LATEST_SHA256/" .SRCINFO
+
+          git config user.name "Samuel Åkesson"
+          git config user.email "sermuns@lysator.liu.se"
+          git commit -am "Update to v$LATEST_VERSION"
+          git push
+        env:
+          SSH_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          LATEST_VERSION: ${{ needs.find-latest-version.outputs.latest_version }}
