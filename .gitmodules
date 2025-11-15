@@ -1,6 +1,0 @@
-[submodule ".aur/stil"]
-	path = .aur/stil
-	url = aur@aur.archlinux.org:stil
-[submodule ".aur/stil-bin"]
-	path = .aur/stil-bin
-	url = aur@aur.archlinux.org:stil-bin
